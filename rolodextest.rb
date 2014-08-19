@@ -1,5 +1,7 @@
 class Rolodex 
 
+	attr_accessor :contacts
+
 	def initialize
 		@contacts = []
 		@index = 1000
@@ -10,6 +12,13 @@ class Rolodex
 		@contacts << contact
 		@index += 1
 		contact
+	end 
+
+	def find_contact(id)
+		@contacts.each do |c|
+			return c if  c.id = id 
+		end 
+		
 	end 
 
 end 

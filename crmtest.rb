@@ -8,10 +8,6 @@ class CRM
 		crm = CRM.new(name)
 		crm.main_menu
 	end
-	# def self.run(name)
-	# 	crm = CRM.new("name")
-	# 	crm.main_menu
-	# end  #will run the class again  	
 
 	def initialize(name)
 		@name = name
@@ -21,6 +17,7 @@ class CRM
 	def print_main_menu
 		puts "[1] Add a contact"
 		puts "[2] Modify a contact"
+		# As a user, if 'modify' is typed, I am prompted to enter a contact attribute to be modified.
 		puts "[3] Display all contacts"
 		puts "[4] Display one contact"
 		puts "[5] Display one contact's attribute"
@@ -40,16 +37,16 @@ class CRM
 	end 
 
 	def call_option(input)
+		puts "input is: #{input.inspect}"
 		case input 
-
 		when 1
 			add_contact
 		when 2
-			puts "Modify a contact"
+			modify_contact
 		when 3
-			puts "Display all contacts"	
+			display_all
 		when 4
-			puts "Display one contact"
+			display_one
 		when 5
 			puts "Display one contact's attribute"
 		when 6 
@@ -61,26 +58,72 @@ class CRM
 		end 
 	end 
 
+	def display_all
+		@rolodex.contacts.each do |contact|
+			puts contact.to_s
+		end 
+	end 
+
+	def display_one
+		puts "Which contact would you like to display?"
+		select_id = gets.chomp
+		show_contact = @rolodex.find_contact(select_id)
+		puts show_contact
+	end 
+	
 	def add_contact
 		puts "First name"
-			first_name = gets.chomp
-			puts "Last name"
-			last_name = gets.chomp
-			puts "email"
-			email = gets.chomp
-			puts "Notes"
-			notes = gets.chomp	
+		first_name = gets.chomp
+		puts "Last name"
+		last_name = gets.chomp
+		puts "email"
+		email = gets.chomp
+		puts "Notes"
+		notes = gets.chomp	
 
-			contact = Contact.new(first_name, last_name, email, notes)
-			@rolodex.add_contact(contact)
+		contact = Contact.new(first_name, last_name, email, notes)
+		@rolodex.add_contact(contact)
 
-			puts "Added #{contact.id} #{contact.first_name} #{contact.last_name} to Rolodex"
+		puts "Added #{contact.id} #{contact.first_name} #{contact.last_name} to Rolodex"
 	end 
-	# def display_
+
+	def modify_contact
+		puts "Which contact would yo like to modify?"
+		select_id = gets.chomp
+		contact_to_modify = @rolodex.find_contact(select_id) 
+		
+		puts "[1] Would you like to modify first name?"
+		puts "[2] Would you like to modify last name?"
+		puts "[3] Would you like to modify email?"
+		puts "[4] Would you like to modify notes?"
+		attribute_to_modify = gets.chomp.to_i
+
+		case attribute_to_modify
+		when 1 
+			puts "Enter new first name"
+			new_first_name = gets.chomp
+			contact_to_modify.first_name = new_first_name
+		when 2
+			puts "Enter new last name"
+			new_last_name = gets.chomp
+			contact_to_modify.last_name = new_last_name
+		when 3
+			puts "Enter new email"
+			new_email = gets.chomp
+			contact_to_modify.email = new_email
+		when 4
+			puts "Enter new note"
+			new_note = gets.chomp
+			contact_to_modify.notes = new_note
+		end 
+
+		puts contact_to_modify.to_s
+		return
+	end 
+
+	
 end     
 
 CRM.run('My CRM')
 
-# crm = CRM.new("my crm")
-# crm.main_menu
 
